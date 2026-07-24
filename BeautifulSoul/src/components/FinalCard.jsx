@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { createConfetti, createFlowerPetals, createHeartRain } from '../utils/confetti';
 
-export default function FinalCard({ onReplay, onPlaySound }) {
+export default function FinalCard({ selectedDate, onReplay, onPlaySound }) {
     React.useEffect(() => {
         onPlaySound();
         setTimeout(() => {
@@ -11,6 +11,21 @@ export default function FinalCard({ onReplay, onPlaySound }) {
             createHeartRain();
         }, 500);
     }, [onPlaySound]);
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'that day';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    };
+
+    const formatTime = (timeString) => {
+        if (!timeString) return '';
+        const [hours, minutes] = timeString.split(':');
+        const hour = parseInt(hours, 10);
+        const period = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${period}`;
+    };
 
     const message = `Thank you for saying yes.
 
@@ -98,7 +113,7 @@ Because this is officially our date. 🥰❤️`;
                     transition={{ delay: 1 }}
                     className="text-center mt-10 text-2xl font-bold text-rose-600"
                 >
-                    See you at 6. 🌹
+                    See you on {formatDate(selectedDate?.date)} at {formatTime(selectedDate?.time)}. 🌹
                 </motion.p>
 
                 {/* <motion.button

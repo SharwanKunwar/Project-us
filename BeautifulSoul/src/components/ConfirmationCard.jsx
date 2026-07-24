@@ -1,7 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function ConfirmationCard({ selectedFood, onNext, onPlaySound }) {
+export default function ConfirmationCard({ selectedDate, selectedFood, onNext, onPlaySound }) {
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    };
+
+    const formatTime = (timeString) => {
+        if (!timeString) return '';
+        const [hours, minutes] = timeString.split(':');
+        const hour = parseInt(hours, 10);
+        const period = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${period}`;
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -39,8 +54,13 @@ export default function ConfirmationCard({ selectedFood, onNext, onPlaySound }) 
 
                 <div className="bg-white/50 backdrop-blur rounded-2xl p-6 mb-8 space-y-4">
                     <div className="text-center">
+                        <p className="text-gray-600 text-sm mb-1">On</p>
+                        <p className="text-lg font-semibold text-rose-600">{formatDate(selectedDate?.date)}</p>
+                    </div>
+                    <div className="border-t border-white/50"></div>
+                    <div className="text-center">
                         <p className="text-gray-600 text-sm mb-1">Be ready by</p>
-                        <p className="text-2xl font-bold text-rose-600">6:00 PM</p>
+                        <p className="text-2xl font-bold text-rose-600">{formatTime(selectedDate?.time)}</p>
                     </div>
                     <div className="border-t border-white/50"></div>
                     <div className="text-center">

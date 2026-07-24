@@ -129,6 +129,7 @@ export default function App() {
           {currentStep === 4 && (
             <FoodSelectionCard
               key="food"
+              selectedDate={selectedDate}
               onNext={handleNextStep}
               onPlaySound={playSound}
               onFoodSelect={handleFoodSelect}
@@ -138,6 +139,7 @@ export default function App() {
           {currentStep === 5 && (
             <ConfirmationCard
               key="confirmation"
+              selectedDate={selectedDate}
               selectedFood={selectedFood}
               onNext={handleNextStep}
               onPlaySound={playSound}
@@ -147,6 +149,7 @@ export default function App() {
           {currentStep === 6 && (
             <PaymentCard
               key="payment"
+              selectedDate={selectedDate}
               onNext={handleNextStep}
               onPlaySound={playSound}
             />
@@ -155,6 +158,7 @@ export default function App() {
           {currentStep === 7 && (
             <QRCodeCard
               key="qrcode"
+              selectedDate={selectedDate}
               onNext={handleNextStep}
               onPlaySound={playSound}
             />
@@ -163,6 +167,7 @@ export default function App() {
           {currentStep === 8 && (
             <FinalCard
               key="final"
+              selectedDate={selectedDate}
               onReplay={handleReplay}
               onPlaySound={playSound}
             />

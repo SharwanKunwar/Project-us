@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { foodOptions } from '../data/foodOptions';
 
-export default function FoodSelectionCard({ onNext, onPlaySound, onFoodSelect }) {
+export default function FoodSelectionCard({ selectedDate, onNext, onPlaySound, onFoodSelect }) {
     const [selected, setSelected] = useState(null);
 
     const handleFoodSelect = (food) => {
@@ -14,6 +14,21 @@ export default function FoodSelectionCard({ onNext, onPlaySound, onFoodSelect })
         }, 300);
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    };
+
+    const formatTime = (timeString) => {
+        if (!timeString) return '';
+        const [hours, minutes] = timeString.split(':');
+        const hour = parseInt(hours, 10);
+        const period = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${period}`;
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -23,6 +38,19 @@ export default function FoodSelectionCard({ onNext, onPlaySound, onFoodSelect })
             className="w-full"
         >
             <div className="bg-gradient-to-br from-white/40 via-rose-50/30 to-pink-100/30 backdrop-blur-xl rounded-3xl p-12 border border-white/60 shadow-2xl max-w-2xl mx-auto">
+
+                {/* Show selected date and time reminder */}
+                {selectedDate && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white/40 backdrop-blur rounded-xl p-3 mb-6 text-center"
+                    >
+                        <p className="text-sm text-gray-700">
+                            📅 {formatDate(selectedDate.date)} at {formatTime(selectedDate.time)}
+                        </p>
+                    </motion.div>
+                )}
 
                 <motion.div
                     className="text-5xl mb-4 text-center"
@@ -51,8 +79,8 @@ export default function FoodSelectionCard({ onNext, onPlaySound, onFoodSelect })
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={`p-6 rounded-2xl backdrop-blur-md border-2 transition-all text-left ${selected === food.id
-                                    ? `bg-gradient-to-br ${food.color} border-white shadow-lg`
-                                    : 'bg-white/30 border-white/50 hover:bg-white/40'
+                                ? `bg-gradient-to-br ${food.color} border-white shadow-lg`
+                                : 'bg-white/30 border-white/50 hover:bg-white/40'
                                 }`}
                         >
                             <div className="flex items-start gap-3">
