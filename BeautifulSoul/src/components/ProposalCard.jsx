@@ -107,17 +107,19 @@ export default function ProposalCard({ onYes, onPlaySound }) {
               YES 💖
             </motion.button>
 
-            <button
+            <motion.button
               ref={noButtonRef}
               onMouseEnter={handleNoInteraction}
               onMouseDown={handleNoInteraction}
               onTouchStart={handleNoInteraction}
               onClick={handleNoInteraction}
-              className="relative z-10 px-6 py-3 bg-white/80 text-gray-700 font-semibold text-lg rounded-full shadow-md border border-gray-200 transition-all duration-300 ease-out"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative z-10 px-8 py-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white font-bold text-xl rounded-full shadow-lg hover:shadow-xl transition-all"
               style={{ transform: 'translate(0px, 0px)', willChange: 'transform' }}
             >
               NO 😈
-            </button>
+            </motion.button>
           </div>
 
           {attempts > 0 && (

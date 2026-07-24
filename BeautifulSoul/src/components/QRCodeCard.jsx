@@ -40,7 +40,7 @@ export default function QRCodeCard({ onNext, onPlaySound }) {
                     className="bg-white/80 backdrop-blur rounded-2xl p-8 mb-8 flex items-center justify-center"
                 >
                     <img
-                        src="/qr-code.png"
+                        src="/qr.jpeg"
                         alt="QR Code"
                         className="w-56 h-56 object-contain"
                         onError={(e) => {
