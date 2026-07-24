@@ -83,8 +83,8 @@ Because this is officially our date. 🥰❤️`;
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 + index * 0.1 }}
                             className={`text-center mb-4 leading-relaxed ${line.includes('Thank you') || line.includes('happy')
-                                    ? 'text-base text-gray-800 font-semibold'
-                                    : 'text-base text-gray-700'
+                                ? 'text-base text-gray-800 font-semibold'
+                                : 'text-base text-gray-700'
                                 }`}
                         >
                             {line}
@@ -101,7 +101,7 @@ Because this is officially our date. 🥰❤️`;
                     See you at 6. 🌹
                 </motion.p>
 
-                <motion.button
+                {/* <motion.button
                     onClick={onReplay}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ Because this is officially our date. 🥰❤️`;
                     className="w-full mt-12 px-6 py-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transition-all"
                 >
                     Replay our little adventure ↻
-                </motion.button>
+                </motion.button> */}
 
                 <motion.p
                     initial={{ opacity: 0 }}

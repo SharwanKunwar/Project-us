@@ -1,41 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { createConfetti, createFlowerPetals } from '../utils/confetti';
 
 export default function ProposalCard({ onYes, onPlaySound }) {
-  const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
   const [attempts, setAttempts] = useState(0);
   const noButtonRef = useRef(null);
-  const cardRef = useRef(null);
 
-  const noMessages = [
-    'Are you sure? 🥺',
-    'Wait... try again 😭',
-    'The button seems to be broken... suspicious 🤨',
-    'Okay, I see what you\'re trying to do 😂',
-    'Just click YES already 😌💖',
-  ];
+  const moveButton = (targetButton) => {
+    const maxX = 50;
+    const maxY = 100;
+    const randomX = Math.floor(Math.random() * (2 * maxX + 1)) - maxX;
+    const randomY = Math.floor(Math.random() * (2 * maxY + 1)) - maxY;
 
-  const handleNoHover = () => {
-    if (!cardRef.current || !noButtonRef.current) return;
+    if (targetButton) {
+      targetButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    }
+  };
 
-    const cardRect = cardRef.current.getBoundingClientRect();
-    const buttonRect = noButtonRef.current.getBoundingClientRect();
+  const handleNoInteraction = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-    const cardWidth = cardRect.width;
-    const cardHeight = cardRect.height;
-    const buttonWidth = buttonRect.width;
-    const buttonHeight = buttonRect.height;
+    if (!noButtonRef.current) return;
 
-    const padding = 20;
-    const maxX = cardWidth - buttonWidth - padding;
-    const maxY = cardHeight - buttonHeight - padding;
-
-    const newX = Math.random() * Math.max(0, maxX) + padding;
-    const newY = Math.random() * Math.max(0, maxY) + padding;
-
-    setNoButtonPos({ x: newX, y: newY });
-    setAttempts(prev => prev + 1);
+    moveButton(noButtonRef.current);
+    setAttempts((prev) => prev + 1);
   };
 
   const handleYes = () => {
@@ -46,6 +35,15 @@ export default function ProposalCard({ onYes, onPlaySound }) {
       onYes();
     }, 1000);
   };
+
+  const noMessages = [
+    'Are you sure? 🥺',
+    'Wait... try again 😭',
+    'The button seems to be broken... suspicious 🤨',
+    'Okay, I see what you\'re trying to do 😂',
+    'As you wish try again 😌💖',
+    '. . .'
+  ];
 
   const currentMessage = noMessages[Math.min(attempts, noMessages.length - 1)];
 
@@ -58,7 +56,6 @@ export default function ProposalCard({ onYes, onPlaySound }) {
       className="w-full"
     >
       <div
-        ref={cardRef}
         className="bg-gradient-to-br from-white/40 via-rose-50/30 to-pink-100/30 backdrop-blur-xl rounded-3xl p-12 border border-white/60 shadow-2xl max-w-md mx-auto relative overflow-visible"
       >
         <motion.div
@@ -100,34 +97,34 @@ export default function ProposalCard({ onYes, onPlaySound }) {
         </p>
 
         <div className="relative min-h-48 flex flex-col items-center justify-center gap-6">
-          <motion.button
-            onClick={handleYes}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative z-10 px-8 py-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white font-bold text-xl rounded-full shadow-lg hover:shadow-xl transition-all"
-          >
-            YES 💖
-          </motion.button>
-
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <motion.button
+              onClick={handleYes}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative z-10 px-8 py-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white font-bold text-xl rounded-full shadow-lg hover:shadow-xl transition-all"
+            >
+              YES 💖
+            </motion.button>
+
+            <button
               ref={noButtonRef}
-              animate={{ x: noButtonPos.x, y: noButtonPos.y }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              onMouseEnter={handleNoHover}
-              onTouchStart={handleNoHover}
-              className="pointer-events-auto px-6 py-3 bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700 font-semibold rounded-full shadow-md cursor-default"
-              disabled
+              onMouseEnter={handleNoInteraction}
+              onMouseDown={handleNoInteraction}
+              onTouchStart={handleNoInteraction}
+              onClick={handleNoInteraction}
+              className="relative z-10 px-6 py-3 bg-white/80 text-gray-700 font-semibold text-lg rounded-full shadow-md border border-gray-200 transition-all duration-300 ease-out"
+              style={{ transform: 'translate(0px, 0px)', willChange: 'transform' }}
             >
               NO 😈
-            </motion.button>
+            </button>
           </div>
 
           {attempts > 0 && (
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center text-sm text-gray-600 mt-4 text-base"
+              className="text-center text-sm text-gray-600 mt-2"
             >
               {currentMessage}
             </motion.p>
